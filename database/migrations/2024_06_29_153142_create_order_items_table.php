@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('menu_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->float('price');
+            $table->float('total_price');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamp('deleted_at')->nullable();

@@ -11,7 +11,7 @@ class StoreOrder extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,9 @@ class StoreOrder extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required|numeric|min:1',
-            'user_id' => 'required',
-            'restaurant_id' => 'required',
-
+            'items' => 'required|array|min:1',
+            'items.menu_id' => 'required|exists:menus,id',
+            'items.quantity' => 'required|numeric|min:1',
         ];
     }
 }

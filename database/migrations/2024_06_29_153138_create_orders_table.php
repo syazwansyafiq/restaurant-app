@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->string('status');
-            $table->float('total_amount');
-            $table->integer('loyalty_points');
+            $table->float('total_amount')->nullable();
+            $table->integer('loyalty_points')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->foreignId('deleted_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

@@ -26,14 +26,14 @@ Route::middleware('auth:sanctum')->group(function () {
      // Customer Routes
     Route::get('/restaurants', [CustomerController::class, 'restaurants']);
     Route::get('/restaurants/{id}', [CustomerController::class, 'showRestaurant']);
-    Route::post('/orders', [CustomerController::class, 'storeOrder']);
+    Route::post('/orders', [CustomerController::class, 'storeOrder'])->name('orders.store');
     Route::post('/payments', [CustomerController::class, 'processPayment']);
 
     // Restaurant Manager Routes
     Route::middleware('role:restaurant_manager')->group(function () {
-        Route::get('/orders', [RestaurantManagerController::class, 'orderList']);
-        Route::put('/orders/{id}/reject', [RestaurantManagerController::class, 'rejectOrder']);
-        Route::get('/sales', [RestaurantManagerController::class, 'sales']);
+        Route::get('/orders', [RestaurantManagerController::class, 'orderList'])->name('orders.list');
+        Route::put('/orders/{id}/reject', [RestaurantManagerController::class, 'rejectOrder'])->name('orders.reject');
+        Route::get('/sales', [RestaurantManagerController::class, 'sales'])->name('sales.list');
     });
 
     // Admin Routes

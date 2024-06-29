@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function restaurant()
     {
-        return $this->hasOne(Restaurant::class);
+        return $this->hasOne(Restaurant::class, 'id', 'user_id');
     }
 
     public function loyaltyPoints()

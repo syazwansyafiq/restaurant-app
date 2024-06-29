@@ -45,7 +45,9 @@ class CustomerController extends Controller
 
     public function storeOrder(StoreOrder $request)
     {
-        return $this->orderService->storeOrder($request);
+        $order = $this->orderService->storeOrder($request);
+
+        return response()->json(['status' => 'Order placed successfully', 'order' => $order], 201);
     }
 
     public function processPayment(InitPayment $request)

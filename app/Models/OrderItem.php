@@ -9,7 +9,7 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_id', 'menu_id', 'quantity', 'total_amount'];
+    protected $fillable = ['order_id', 'menu_id', 'quantity', 'total_price'];
 
     public function order()
     {
@@ -29,5 +29,12 @@ class OrderItem extends Model
     public function points()
     {
         return $this->totalAmount() / 100;
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($orderItem) {
+            $orderItem->total_price = $orderItem->quantity * $orderItem->price;
+        });
     }
 }

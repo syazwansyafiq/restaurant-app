@@ -58,14 +58,35 @@ class OrderService
     public function storeOrder($request)
     {
         $user = auth()->user();
+
+        $total_amount = 0;
+
         $order = Order::create([
             'user_id' => $user->id,
             'restaurant_id' => $request->restaurant_id,
-            'total_amount' => $request->total_amount,
             'status' => 'pending',
+            'created_by' => $user->id
         ]);
+        $orderItems = $request->items;
 
-        return response()->json(['status' => 'Order placed successfully', 'order' => $order], 201);
+        foreach ($orderItems as $orderItem) {
+            dd($orderItems);
+            $menuid = (int)$orderItem['menu_id'];
+            $menu = DB::table('menus')->where('id', $menuid)->first();
+            $createitem = [
+                'order_id' => $order->id,
+                'menu_id' => $orderItem['menu_id'],
+                'quantity' => $orderItem['quantity'],
+                'price' => $menu->price,
+            ];
+            $total_amount += $menu->price * $orderItem['quantity'];
+            $order->orderItems()->create($createitem);
+        }
+
+        $order->total_amount = $total_amount;
+        $order->save();
+
+       return $order;
     }
 
     public function rejectOrder($request)
