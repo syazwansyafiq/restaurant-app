@@ -30,6 +30,7 @@ class CustomerController extends Controller
 
     public function restaurants(Request $request)
     {
+        $request->merge(['status' => 'active']);
         $restaurants = $this->restaurantService->query($request);
 
         return new RestaurantCollection($restaurants);

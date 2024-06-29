@@ -92,7 +92,7 @@ class RestaurantService
     public function approveRestaurant($id)
     {
         $restaurant = Restaurant::findOrFail($id);
-        $restaurant->update(['status' => 'approved']);
+        $restaurant->update(['status' => 'active']);
         return response()->json(['message' => 'Restaurant approved successfully.']);
     }
 
