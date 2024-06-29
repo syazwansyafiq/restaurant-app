@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['middleware' => 'csrf'], function () {
+    Route::group(['name' => 'payment.'], function () {
+        Route::get('/', 'App\Http\Controllers\PaymentController@payment')->name('payment.index');
+        Route::post('/stripe/charge', 'App\Http\Controllers\StripeController@charge')->name('stripe.charge');
+    });
+});
+

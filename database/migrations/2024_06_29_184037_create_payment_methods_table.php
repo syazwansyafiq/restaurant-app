@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_categories', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('code');
+            $table->string('image');
+            $table->string('status');
+            $table->string('description');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamp('deleted_at')->nullable();
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_categories');
+        Schema::dropIfExists('payment_methods');
     }
 };

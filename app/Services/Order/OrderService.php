@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Services\Restaurant;
+namespace App\Services\Order;
 
+use App\Http\DataTransferObjects\CompletePayment;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    public function __construct()
-    {
-
-    }
-
     public function storeOrder($request)
     {
         $user = auth()->user();
@@ -19,17 +15,19 @@ class OrderService
             'user_id' => $user->id,
             'restaurant_id' => $request->restaurant_id,
             'total_amount' => $request->total_amount,
-            'points' => $request->total_amount, // 1 point per RM1 spent
             'status' => 'pending',
         ]);
 
         return response()->json(['status' => 'Order placed successfully', 'order' => $order], 201);
     }
 
-    public function completePayment($request)
+    public function completePayment(CompletePayment $request)
     {
-        $user = auth()->user();
-        $order = Order::where('user_id', $user->id)->where('status', 'pending')->first();
+        $order = Order::where('user_id', $request->user_id)
+            ->where('id', $request->order_id)
+            ->where('restaurant_id', $request->restaurant_id)
+            ->where('total_amount', $request->total_amount)
+            ->where('status', 'pending')->first();
         $order->status = 'paid';
         $order->save();
 

@@ -30,5 +30,22 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'payment' => [
+        'method' => env('PAYMENT_METHOD'),
+    ],
+    'stripe' => [
+        'model' => App\Models\User::class,
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook' => [
+            'secret' => env('STRIPE_WEBHOOK_SECRET'),
+            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
+        ],
+        'currency' => env('STRIPE_CURRENCY', 'usd'),
+        'source' => env('STRIPE_SOURCE'),
+        'payment_method' => env('STRIPE_PAYMENT_METHOD'),
+        'default_payment_method' => env('STRIPE_DEFAULT_PAYMENT_METHOD'),
+
+    ],
 
 ];

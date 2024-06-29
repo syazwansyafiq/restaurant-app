@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MenuCategory extends Model
+class PaymentMethod extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['menu_id', 'name'];
+    protected $fillable = ['name', 'description'];
 
-    public function menu()
+
+    public function user()
     {
-        return $this->belongsTo(Menu::class);
+        return $this->hasMany(User::class);
     }
 }

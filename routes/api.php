@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\RestaurantManagerController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
      // Customer Routes
-     Route::get('/restaurants', [CustomerController::class, 'index']);
-     Route::get('/restaurants/{id}', [CustomerController::class, 'show']);
+     Route::get('/restaurants', [CustomerController::class, 'restaurants']);
+     Route::get('/restaurants/{id}', [CustomerController::class, 'showRestaurant']);
      Route::post('/orders', [CustomerController::class, 'storeOrder']);
      Route::post('/payments', [CustomerController::class, 'processPayment']);
 

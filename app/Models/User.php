@@ -42,4 +42,35 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function isCustomer()
+    {
+        return $this->role == 'customer';
+    }
+
+    public function isRestaurantManager()
+    {
+        return $this->role == 'restaurant_manager';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
+
+    public function restaurant()
+    {
+        return $this->hasOne(Restaurant::class);
+    }
+
+    public function loyaltyPoints()
+    {
+        return $this->hasMany(LoyaltyPoint::class);
+    }
+
 }

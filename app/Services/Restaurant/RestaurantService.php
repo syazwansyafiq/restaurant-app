@@ -6,11 +6,6 @@ use App\Models\Restaurant;
 
 class RestaurantService
 {
-    public function __construct()
-    {
-
-    }
-
     public function index()
     {
         return Restaurant::all();
