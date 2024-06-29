@@ -35,4 +35,9 @@ class Restaurant extends Model
     {
         return $this->hasMany(LoyaltyPoint::class);
     }
+
+    public function sale()
+    {
+        return $this->hasOne(Sales::class);
+    }
 }

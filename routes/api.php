@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Restaurant Manager Routes
     Route::middleware('role:restaurant_manager')->group(function () {
-        Route::get('/orders', [RestaurantManagerController::class, 'index']);
+        Route::get('/orders', [RestaurantManagerController::class, 'orderList']);
         Route::put('/orders/{id}/reject', [RestaurantManagerController::class, 'rejectOrder']);
         Route::get('/sales', [RestaurantManagerController::class, 'sales']);
     });
