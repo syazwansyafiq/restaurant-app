@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InitPayment;
 use App\Http\Requests\StoreOrder;
+use App\Http\Resources\Restaurant;
+use App\Http\Resources\RestaurantCollection;
 use App\Services\Order\OrderService;
 use App\Services\Payment\PaymentService;
-use App\Services\Restaurant\CustomerService;
 use App\Services\Restaurant\RestaurantService;
 use Illuminate\Http\Request;
 
@@ -29,12 +30,16 @@ class CustomerController extends Controller
 
     public function restaurants(Request $request)
     {
-        return $this->restaurantService->query($request);
+        $restaurants = $this->restaurantService->query($request);
+
+        return new RestaurantCollection($restaurants);
     }
 
     public function showRestaurant($id)
     {
-        return $this->restaurantService->show($id);
+        $restaurant = $this->restaurantService->show($id);
+
+        return new Restaurant($restaurant);
     }
 
     public function storeOrder(StoreOrder $request)

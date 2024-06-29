@@ -23,8 +23,6 @@ class RestaurantService
         $query = $query->offset($offset)->limit($limit);
         $query = $query->get();
         return $query;
-
-
     }
 
     public function filter($request)

@@ -3,6 +3,7 @@
 namespace App\Services\Stripe;
 
 use App\Http\DataTransferObjects\CompletePayment;
+use App\Models\Payment;
 use App\Services\Order\OrderService;
 use App\Services\Payment\PaymentService;
 use Stripe\StripeClient;
@@ -11,13 +12,11 @@ class StripeService
 {
     public $stripe;
     public $orderService;
-    public $paymentService;
 
     public function __construct()
     {
         $this->stripe = new StripeClient(config('services.stripe.secret'));
         $this->orderService = new OrderService();
-        $this->paymentService = new PaymentService();
     }
 
     public function charge($request)
@@ -63,12 +62,16 @@ class StripeService
 
     private function updatePayment($object, $response = null)
     {
-        $update = (object) [
-            'order_id' => $object->metadata->order_id,
-            'user_id' => $object->metadata->user_id,
-            'payment_id' => $object->metadata->payment_id,
-        ];
-        $this->paymentService->completePayment($update, $response);
+        $payment = Payment::where('order_id', $object->metadata->order_id)
+        ->where('user_id', $object->metadata->user_id)
+        ->where('payment_id', $object->metadata->payment_id)
+        ->where('status', 'pending')
+        ->first();
+        $payment->transaction_id = $response->id;
+        $payment->amount = $response->amount;
+        $payment->payment_details = json_encode($response);
+        $payment->status = 'paid';
+        $payment->save();
     }
 
     private function updateOrderStatus($object)
