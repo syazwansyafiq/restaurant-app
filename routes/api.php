@@ -21,23 +21,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->group(function () {
+
      // Customer Routes
-     Route::get('/restaurants', [CustomerController::class, 'restaurants']);
-     Route::get('/restaurants/{id}', [CustomerController::class, 'showRestaurant']);
-     Route::post('/orders', [CustomerController::class, 'storeOrder']);
-     Route::post('/payments', [CustomerController::class, 'processPayment']);
+    Route::get('/restaurants', [CustomerController::class, 'restaurants']);
+    Route::get('/restaurants/{id}', [CustomerController::class, 'showRestaurant']);
+    Route::post('/orders', [CustomerController::class, 'storeOrder']);
+    Route::post('/payments', [CustomerController::class, 'processPayment']);
 
-     // Restaurant Manager Routes
-     Route::middleware('role:restaurant_manager')->group(function () {
-         Route::get('/orders', [RestaurantManagerController::class, 'index']);
-         Route::put('/orders/{id}/reject', [RestaurantManagerController::class, 'rejectOrder']);
-         Route::get('/sales', [RestaurantManagerController::class, 'sales']);
-     });
+    // Restaurant Manager Routes
+    Route::middleware('role:restaurant_manager')->group(function () {
+        Route::get('/orders', [RestaurantManagerController::class, 'index']);
+        Route::put('/orders/{id}/reject', [RestaurantManagerController::class, 'rejectOrder']);
+        Route::get('/sales', [RestaurantManagerController::class, 'sales']);
+    });
 
-     // Admin Routes
-     Route::middleware('role:admin')->group(function () {
-         Route::put('/restaurants/{id}/approve', [AdminController::class, 'approveRestaurant']);
-         Route::put('/restaurants/{id}/ban', [AdminController::class, 'banRestaurant']);
-     });
+    // Admin Routes
+    Route::middleware('role:admin')->group(function () {
+        Route::put('/restaurants/{id}/approve', [AdminController::class, 'approveRestaurant']);
+        Route::put('/restaurants/{id}/ban', [AdminController::class, 'banRestaurant']);
+    });
+
 });
