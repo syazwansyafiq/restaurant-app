@@ -9,4 +9,8 @@ This is an example of a restaurant food ordering system API.
     <li> npm install </li>
     <li> php artisan migrate </li>
     <li> php artisan db:seed </li>
+    <li> php artisan serve </li>
+    <li> npm run dev </li>
+    <li> php artisan queue:work </li>
+
 </ul>
