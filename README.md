@@ -89,12 +89,17 @@ The following are the available API endpoints for this application:
 
 ### Improvements
 
-- Use caching to improve the performance of the application.
-- Use a more appealing template to make the application more visually appealing.
-- Integrate multiple payment gateways to provide more payment options.
-- Implement delivery management to manage the delivery process.
-- Implement multi-tenant capability to support multiple restaurants using the same application.
-- Have a customer page for food ordering with a list of available restaurants and their menu items.
+- Implement caching using Redis or Memcached to improve the performance of the application.
+- Enhance the user interface by using a more visually appealing template.
+- Integrate multiple payment gateways such as Stripe, PayPal, or Razorpay to provide more payment options.
+- Implement a delivery management system to manage the delivery process.
+- Implement multi-tenancy to support multiple restaurants using the same application.
+- Create a customer page for food ordering that displays available restaurants and their menu items.
+- Containerize the application using Docker to improve portability and scalability.
+- Set up CI/CD using GitHub Actions to automatically build, test, and deploy the application.
+- Utilize the Spatie Laravel-Activitylog package to log user activities.
+- Implement Laravel Horizon to manage the queue and provide insights into the queue processing.
+
 
 ### Contributing
 
@@ -105,5 +110,6 @@ Please make sure to update tests as appropriate.
 ### License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
 
 
