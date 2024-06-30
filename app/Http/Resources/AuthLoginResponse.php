@@ -23,7 +23,7 @@ class AuthLoginResponse extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'access_token' => $this->token,
             'token_type' => 'bearer',
             'expires_in' => $this->expires_in,
@@ -33,5 +33,11 @@ class AuthLoginResponse extends JsonResource
                 'email' => $this->user->email
             ],
         ];
+
+        if(auth()->user()->role == 'customer') {
+            $return['user']['loyalty_points'] = new LoyaltyPoint($this->user->loyaltyPoint);
+        }
+
+        return $return;
     }
 }
