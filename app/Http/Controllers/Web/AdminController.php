@@ -16,7 +16,8 @@ class AdminController extends Controller
     }
     public function index()
     {
-        return view('dashboard.admin');
+        $restaurants = $this->restaurantService->index();
+        return view('admin.index', compact('restaurants'));
     }
 
     public function approve($id)

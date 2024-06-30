@@ -32,30 +32,62 @@ class CustomerController extends Controller
 
     public function restaurants(Request $request)
     {
-        $request->merge(['status' => 'active']);
-        $restaurants = $this->restaurantService->query($request);
+        try {
 
-        return new RestaurantCollection($restaurants);
+            $request->merge(['status' => 'active']);
+            $restaurants = $this->restaurantService->query($request);
+
+            return new RestaurantCollection($restaurants);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
     }
 
     public function showRestaurant($id)
     {
-        $restaurant = $this->restaurantService->show($id);
+        try {
 
-        return new Restaurant($restaurant);
+            $restaurant = $this->restaurantService->show($id);
+
+            return new Restaurant($restaurant);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function storeOrder(Request $request)
     {
-        $order = $this->orderService->storeOrder($request);
+        try {
+            $request->validate([
+                'restaurant_id' => 'required|exists:restaurants,id',
+                'items' => 'required|array|min:1',
+                'delivery_type' => 'required|in:pickup,delivery',
+                'delivery_address' => 'required_if:delivery_type,delivery',
+            ]);
 
-        return new OrderCreated($order);
+            $order = $this->orderService->storeOrder($request);
+
+            return new OrderCreated($order);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function processPayment(InitPayment $request)
     {
-        $payment = $this->paymentService->create($request);
+        try {
+            $request->validate([
+                'order_id' => 'required|exists:orders,id',
+                'amount' => 'required|numeric',
+                'description' => 'required',
+            ]);
 
-        return new ResourcesInitPayment($payment);
+            $payment = $this->paymentService->create($request);
+
+            return new ResourcesInitPayment($payment);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

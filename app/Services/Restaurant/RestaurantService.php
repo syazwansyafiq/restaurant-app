@@ -61,6 +61,10 @@ class RestaurantService
             $query->where('description', 'like', '%' . $request->description . '%');
         }
 
+        if($request->category) {
+            $query->where('category', 'like', '%' . $request->category . '%');
+        }
+
         return $query;
     }
 

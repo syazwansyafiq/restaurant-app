@@ -68,6 +68,8 @@ class OrderService
             'restaurant_id' => $request->restaurant_id,
             'status' => 'pending',
             'created_by' => $user->id,
+            'delivery_type' => $request->delivery_type,
+            'delivery_address' => $request->delivery_address
         ]);
         $orderItems = $request->items;
 

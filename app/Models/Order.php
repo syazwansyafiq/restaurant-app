@@ -9,11 +9,21 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'restaurant_id', 'menu_id', 'quantity', 'status', 'total_amount', 'created_by'];
+    protected $fillable = ['user_id', 'restaurant_id', 'menu_id', 'quantity', 'status', 'total_amount', 'created_by', 'delivery_address', 'delivery_type'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function restaurant()

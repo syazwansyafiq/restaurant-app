@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('status');
             $table->float('total_amount')->nullable();
             $table->integer('loyalty_points')->nullable();
+            $table->enum('delivery_type', ['pickup', 'delivery']);
+            $table->string('delivery_address')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->foreignId('deleted_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

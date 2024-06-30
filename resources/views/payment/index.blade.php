@@ -49,10 +49,10 @@
                             </div>
                           </div>
                     </div>
-                    <div class="mt-10 col-md-12">
+                    {{-- <div class="mt-10 col-md-12">
                         <h2>Stripe Payment</h2>
                         @include('payment.stripe')
-                    </div>
+                    </div> --}}
 
                     <div class="mt-10 col-md-12">
                         <h2>MobyPay</h2>

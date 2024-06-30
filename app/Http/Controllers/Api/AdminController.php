@@ -18,11 +18,19 @@ class AdminController extends Controller
 
     public function approveRestaurant($id)
     {
-        return $this->restaurantService->approveRestaurant($id);
+        try {
+            return $this->restaurantService->approveRestaurant($id);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function banRestaurant($id)
     {
-        return $this->restaurantService->banRestaurant($id);
+        try {
+            return $this->restaurantService->banRestaurant($id);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }
