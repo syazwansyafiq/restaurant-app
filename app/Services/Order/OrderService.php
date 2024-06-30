@@ -3,6 +3,8 @@
 namespace App\Services\Order;
 
 use App\Http\DataTransferObjects\CompletePayment;
+use App\Http\Resources\Menu;
+use App\Models\Menu as ModelsMenu;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
@@ -65,37 +67,32 @@ class OrderService
             'user_id' => $user->id,
             'restaurant_id' => $request->restaurant_id,
             'status' => 'pending',
-            'created_by' => $user->id
+            'created_by' => $user->id,
         ]);
         $orderItems = $request->items;
 
         foreach ($orderItems as $orderItem) {
-            dd($orderItems);
             $menuid = (int)$orderItem['menu_id'];
-            $menu = DB::table('menus')->where('id', $menuid)->first();
+            $menu = ModelsMenu::where('id', $menuid)->first();
             $createitem = [
                 'order_id' => $order->id,
                 'menu_id' => $orderItem['menu_id'],
                 'quantity' => $orderItem['quantity'],
                 'price' => $menu->price,
+                'created_by' => $user->id
             ];
             $total_amount += $menu->price * $orderItem['quantity'];
             $order->orderItems()->create($createitem);
         }
-
         $order->total_amount = $total_amount;
         $order->save();
 
        return $order;
     }
 
-    public function rejectOrder($request)
+    public function rejectOrder($id)
     {
-        $order = Order::where('user_id', $request->user_id)
-            ->where('id', $request->order_id)
-            ->where('restaurant_id', $request->restaurant_id)
-            ->where('total_amount', $request->total_amount)
-            ->where('status', 'pending')->first();
+        $order = Order::find($id);
         $order->status = 'rejected';
         $order->save();
         return response()->json(['status' => 'Order rejected successfully', 'order' => $order], 200);
@@ -106,20 +103,18 @@ class OrderService
         $order = Order::where('user_id', $request->user_id)
             ->where('id', $request->order_id)
             ->where('restaurant_id', $request->restaurant_id)
-            ->where('total_amount', $request->total_amount)
-            ->where('status', 'pending')->first();
+            ->where('total_amount', $request->total_amount)->first();
         $order->status = 'paid';
         $order->save();
 
         $this->addLotaltyPoints($order);
 
-        return response()->json(['status' => 'Payment completed successfully', 'order' => $order], 200);
     }
 
     private function addLotaltyPoints($order)
     {
         $points = $order->total_amount; // Assuming total_amount is in RM
-        $order->points = $points;
+        $order->loyalty_points = $points;
         $order->save();
 
         $order->user->loyaltyPoints()->updateOrCreate(

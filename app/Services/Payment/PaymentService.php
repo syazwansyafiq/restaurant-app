@@ -4,6 +4,7 @@
 namespace App\Services\Payment;
 
 use App\Exceptions\IncompletePayment;
+use App\Exceptions\PaymentNotFound;
 use App\Http\Requests\InitPayment as RequestsInitPayment;
 use App\Http\Resources\InitPayment;
 use App\Models\Payment;
@@ -18,48 +19,59 @@ class PaymentService
         $this->stripeService = new StripeService();
     }
 
-    public function processPayment(RequestsInitPayment $request)
+    public function create(RequestsInitPayment $request)
     {
-        try {
+        $user = $request->user();
+        $slug = $this->createPaymentSlug(11);
+        $payment = Payment::create([
+            'user_id' => $user->id,
+            'order_id' => $request->order_id,
+            'amount' => $request->amount,
+            'payment_method' => $request->payment_method ?? config('services.payment.default_method'),
+            'description' => $request->description,
+            'status' => 'pending',
+            'slug' => $slug,
+            'reference' => $this->generateReference($request->order_id),
+        ]);
 
-            $payment = Payment::create([
-                'order_id' => $request->order_id,
-                'amount' => $request->amount,
-                'payment_method' => 'stripe',
-                'status' => 'pending',
-            ]);
-
-            $response = [
-                'redirect' => route('payment.index', [
-                    'description' => $request->description,
-                    'amount' => $request->amount,
-                    'order_id' => $request->order_id,
-                    'user_id' => $request->user_id,
-                    'payment_id' => $payment->id
-                ]),
-                'amount' => $request->amount,
-                'description' => $request->description
-
-            ];
-            return new InitPayment($response);
-        } catch (\Exception $exception) {
-            throw new IncompletePayment($exception->getMessage());
-        }
+        return $payment;
     }
 
-    public function completePayment($request, $response)
+    private function generateReference($orderId)
+    {
+        $ymd = date('ymd');
+        $time = date('His');
+
+        return $ymd . $time . $orderId;
+    }
+
+    public function findSlug($slug)
+    {
+        $payment = Payment::where('slug', $slug)->first();
+        if (!$payment) {
+            throw new PaymentNotFound();
+        }
+        return $payment;
+    }
+
+    public function completePayment($request)
     {
         $payment = Payment::where('order_id', $request->order_id)
             ->where('user_id', $request->user_id)
-            ->where('payment_id', $request->payment_id)
-            ->where('status', 'pending')
+            ->where('id', $request->payment_id)
             ->first();
-        $payment->transaction_id = $response->id;
-        $payment->amount = $response->amount;
-        $payment->payment_details = json_encode($response);
         $payment->status = 'paid';
         $payment->save();
-        $this->stripeService->charge($request);
     }
 
+    private function createPaymentSlug($length)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 }

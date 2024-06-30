@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InitPayment;
 use App\Http\Requests\StoreOrder;
+use App\Http\Resources\InitPayment as ResourcesInitPayment;
+use App\Http\Resources\OrderCreated;
 use App\Http\Resources\Restaurant;
 use App\Http\Resources\RestaurantCollection;
 use App\Services\Order\OrderService;
@@ -43,15 +45,17 @@ class CustomerController extends Controller
         return new Restaurant($restaurant);
     }
 
-    public function storeOrder(StoreOrder $request)
+    public function storeOrder(Request $request)
     {
         $order = $this->orderService->storeOrder($request);
 
-        return response()->json(['status' => 'Order placed successfully', 'order' => $order], 201);
+        return new OrderCreated($order);
     }
 
     public function processPayment(InitPayment $request)
     {
-        return $this->paymentService->processPayment($request);
+        $payment = $this->paymentService->create($request);
+
+        return new ResourcesInitPayment($payment);
     }
 }

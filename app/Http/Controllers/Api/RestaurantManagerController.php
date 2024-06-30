@@ -25,10 +25,10 @@ class RestaurantManagerController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function rejectOrder(Request $request)
+    public function rejectOrder(Request $request, $id)
     {
         try {
-            return $this->orderService->rejectOrder($request);
+            return $this->orderService->rejectOrder($id);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

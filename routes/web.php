@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\Web\AdminController;
@@ -39,12 +40,19 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 Route::group(['prefix' => 'payment', 'as' => 'payment.'], function () {
-    Route::get('/', [PaymentController::class, 'index'])->name('index');
+    Route::get('{slug}/checkout', [PaymentController::class, 'index'])->name('index');
+    Route::get('/success', [PaymentController::class, 'success'])->name('success');
+    Route::get('/fail', [PaymentController::class, 'fail'])->name('fail');
 
     Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function () {
         Route::post('/charge', [StripeController::class, 'charge'])->name('charge');
         Route::post('/webhook', [StripeController::class, 'webhook'])->name('webhook');
+    });
 
+    Route::group(['prefix' => 'moby', 'as' => 'moby.'], function () {
+        Route::post('/callback', [MobyController::class, 'callback'])->name('callback');
+        Route::get('/return', [MobyController::class, 'return'])->name('return');
+        Route::post('/hosted', [MobyController::class, 'hosted'])->name('hosted');
     });
 });
 

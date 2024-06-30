@@ -32,6 +32,7 @@ return [
     ],
     'payment' => [
         'method' => env('PAYMENT_METHOD'),
+        'default_payment_method' => env('DEFAULT_PAYMENT_METHOD'),
     ],
     'stripe' => [
         'model' => App\Models\User::class,
@@ -44,8 +45,12 @@ return [
         'currency' => env('STRIPE_CURRENCY', 'usd'),
         'source' => env('STRIPE_SOURCE'),
         'payment_method' => env('STRIPE_PAYMENT_METHOD'),
-        'default_payment_method' => env('STRIPE_DEFAULT_PAYMENT_METHOD'),
-
+        'default_payment_method' => env('DEFAULT_PAYMENT_METHOD'),
+    ],
+    'mobypay' => [
+        'key' => env('MOBYPAY_KEY'),
+        'secret' => env('MOBYPAY_SECRET'),
+        'url' => env('MOBYPAY_URL'),
     ],
 
 ];

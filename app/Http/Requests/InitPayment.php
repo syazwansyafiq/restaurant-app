@@ -11,7 +11,7 @@ class InitPayment extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,6 @@ class InitPayment extends FormRequest
             'description' => 'required',
             'amount' => 'required',
             'order_id' => 'required',
-            'user_id' => 'required',
         ];
     }
 }
