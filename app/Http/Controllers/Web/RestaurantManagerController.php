@@ -13,9 +13,9 @@ class RestaurantManagerController extends Controller
 {
     public function index()
     {
-        dd('asd');
-        $restaurant = Restaurant::where('user_id', auth()->user()->id)->firstOrFail();
-        $sale = Sales::where('restaurant_id', $restaurant->id)->firstOrFail();
+        $restaurant = Restaurant::where('user_id', auth()->user()->id)->first();
+        $sale = Sales::where('restaurant_id', $restaurant->id)->first();
+
         $orders = $restaurant->orders;
 
         if(is_null($sale)) {

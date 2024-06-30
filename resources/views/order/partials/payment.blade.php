@@ -12,27 +12,27 @@
             <table class="w-full table-auto">
                 <tr>
                     <th class="w-1/5">Payment ID</th>
-                    <td class="w-4/5">{{ $order->payment->id }}</td>
+                    <td class="w-4/5">{{  $payment->id }}</td>
                 </tr>
                 <tr>
                     <th class="w-1/5">Payment Amount</th>
-                    <td class="w-4/5">{{ number_format($order->payment->amount, 2) }}</td>
+                    <td class="w-4/5">{{ number_format( $payment->amount, 2) }}</td>
                 </tr>
                 <tr>
                     <th class="w-1/5">Payment Status</th>
-                    <td class="w-4/5">{{ $order->payment->status }}</td>
+                    <td class="w-4/5">{{  $payment->status }}</td>
                 </tr>
                 <tr>
                     <th class="w-1/5">Payment Method</th>
-                    <td class="w-4/5">{{ $order->payment->payment_method }}</td>
+                    <td class="w-4/5">{{  $payment->payment_method }}</td>
                 </tr>
                 <tr>
                     <th class="w-1/5">Payment Date</th>
-                    <td class="w-4/5">{{ $order->payment->created_at }}</td>
+                    <td class="w-4/5">{{  $payment->created_at }}</td>
                 </tr>
                 <tr>
                     <th class="w-1/5">Payment Status</th>
-                    <td class="w-4/5">{{ $order->payment->status }}</td>
+                    <td class="w-4/5">{{  $payment->status }}</td>
                 </tr>
             </table>
         </div>

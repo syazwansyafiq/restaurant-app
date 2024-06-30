@@ -13,7 +13,7 @@ class RestaurantSeeder extends Seeder
      */
     public function run(): void
     {
-        $userId = 1; // Assuming the admin created above has ID 1
+        $userId = 2; // Assuming the admin created above has ID 1
         // Create restaurant manager
         Restaurant::create([
             'name' => 'Asian Delight',
