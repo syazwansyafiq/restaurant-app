@@ -80,6 +80,8 @@ Route::middleware(['auth', 'role:restaurant_manager'])->group(function () {
         Route::get('/dashboard', [RestaurantManagerController::class, 'index'])->name('manager.dashboard');
         Route::get('/orders/{id}/reject', [RestaurantManagerController::class, 'orderReject'])->name('restaurant.order.reject');
         Route::get('/orders/{id}/view', [RestaurantManagerController::class, 'orderView'])->name('restaurant.order.show');
+        Route::get('/sales/update', [RestaurantManagerController::class, 'updateSale'])->name('restaurant.sale.update');
+
 
     });
 });

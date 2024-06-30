@@ -32,6 +32,20 @@
                     Sale This Week : 0
                 </div>
                 @endif
+
+                @if(!empty($sale))
+                <div class="p-6 text-gray-900">
+                    Sale This Month : {{ number_format($sale->month_amount, 2) }}
+                </div>
+                @else
+                <div class="p-6 text-gray-900">
+                    Sale This Month : 0
+                </div>
+                @endif
+
+                <a class="p-6 text-gray-900" href="{{ route('restaurant.sale.update') }}" class="p-6 text-gray-900">
+                    Update Sale
+                </a>
             </div>
         </div>
     </div>

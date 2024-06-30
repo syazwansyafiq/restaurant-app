@@ -25,6 +25,14 @@ class RestaurantManagerController extends Controller
         return view('restaurant.index', compact('restaurant', 'sale', 'orders'));
     }
 
+    public function updateSale(Request $request)
+    {
+        $restaurant = Restaurant::where('user_id', auth()->user()->id)->first();
+        dispatch(new UpdateRestaurantSale($restaurant));
+
+        return redirect()->back();
+    }
+
     public function orderView($id)
     {
         $order = Order::where('id', $id)->firstOrFail();

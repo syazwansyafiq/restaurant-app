@@ -39,7 +39,7 @@ class UpdateRestaurantSale implements ShouldQueue
                 ->avg('total_amount'),
             'latest_order' => Order::where('restaurant_id', $this->restaurant->id)
                 ->latest()
-                ->first(),
+                ->sum('total_amount'),
             'today_amount' => Order::where('restaurant_id', $this->restaurant->id)
                 ->whereDate('created_at', now())
                 ->sum('total_amount'),
