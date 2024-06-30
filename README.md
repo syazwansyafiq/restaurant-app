@@ -32,7 +32,7 @@ This is a restaurant food ordering system API built with Laravel 10.
 
 ### API Collection
 
-You can find the api collection in the `api-collection.json` file. You can import this file into Postman to test the API endpoints.
+You can find the api collection in the `Restaurant API.postman_collection.json` file. You can import this file into Postman to test the API endpoints.
 
 
 ### Architecture
